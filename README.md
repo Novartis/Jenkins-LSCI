@@ -15,7 +15,7 @@ These related Jenkins-LSCI jobs enable users to:
 -   Image analysis pipelines, image lists, and generated measurements are all managed by the Jenkins-LSCI server and can be reviewed, shared and reused in multiple ways thus building a **collaborative foundation for reproducible research**.
 
 -   CellProfiler can be parallelized to execute on a **high performance** compute cluster.
--   High performance image analysis becomes **accesible to laboratory scientists**.
+-   High performance image analysis becomes **accessible to laboratory scientists**.
 
 -   All functionality is **web-accessible**. Users do not need to install CellProfiler locally, or run CellProfiler with the potentially limited compute resources of their local workstation/laptop. 
 -  This basic set of jobs can be **easily extended**  with jobs for data and imaging utilities as the computational needs of the laboratory demand.
@@ -38,12 +38,6 @@ In the absence of instrument metadata, image lists can be created using the Cell
 The ‘OS\_CELLPROFILER\_BATCH’ job allows users to generate correctly formatted CellProfiler task array scripts that can be submitted to a Linux cluster for parallel processing. The job builds take as input a reference to an ‘OS\_CONTRIBUTE\_PIPELINE’ build and a reference to an ‘OS\_CONTRIBUTE\_IMAGELIST’ build. Theses builds define the two inputs for a typical CellProfiler run, the image processing pipeline and the image list.
 
 The task array script is currently formatted for the [UNIVA grid engine](http://www.univa.com/products/) scheduler and it should require little effort to customize for other cluster schedulers. However, due to the non-standardized, local, Linux cluster environment and installed software dependencies, the task array submission process is left up to the user. In addition, CellProfiler and its library dependencies must be installed and correctly working on the destination Linux cluster.
-
-### OS\_CELLPROFILER\_JCLUSTBATCH
-The ‘OS\_CELLPROFILER\_JCLUSTBATCH’ job is an example CellProfiler on cluster job that includes the steps for, creating task arrays, submitting them to the UNIVA grid engine, monitoring the task array execution, and finally merging the individual CellProfiler task output generated on the Linux cluster.
-
-Due to its high dependency on the Novartis cluster infrastructure this job is unlikely to run unmodified on other Linux clusters, but it provides a useful and complete exemplar on how Jenkins-LSCI is used to integrate a complex workflow and monitor an external job.
-
 
 ##Test Drive Jenkins
 If you would like to quickly [test drive Jenkins-CI](https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins) you can [download jenkins.war](http://mirrors.jenkins-ci.org/war/latest/jenkins.war) directly and launch it by executing ```java -jar jenkins.war```.  Once it launches, visit ```http://localhost:8080/``` in your browser to get to the dashboard. On Windows, you can even choose to install [Jenkins as a service](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service) afterwards.
