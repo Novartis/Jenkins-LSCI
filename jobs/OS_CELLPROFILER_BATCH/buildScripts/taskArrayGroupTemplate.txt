@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#\$ -t 1-${taskCount}:1
+#\$ -r y
+#\$ -cwd
+#\$ -V
+#\$ -N ${prefix}_${buildNo}
+#\$ -S /bin/bash
+#\$ -q default.q
+#\$ -l m_mem_free=4G
+#\$ -l h_rt=3600
+
+srcdir=.
+checkjob=${prefix}_${buildNo}
+
+imageGroups=(
+
+"<%= imageGroups.join('"\n"')%>"
+)
+
+idx=\$(( SGE_TASK_ID-1 ))
+
+imageGroup=\${imageGroups[\${idx}]}
+
+
+if [ "x" == "x\$CPVERSION" ] ; then
+     echo "CP Version not set in command line. Using profile default"
+     echo "Current CP Path:"\$(which CellProfiler.py)
+     which python
+     which CellProfiler.py
+else
+     echo "Current CP Path:"\$(which CellProfiler.py)
+     echo "User Requested CellProfiler version: \$CPVERSION"
+     which python
+     which CellProfiler.py
+fi
+
+TMPDIR=/scratch/\$USER/cellprofiler_tmp/JCB_${buildId}
+mkdir -p \$TMPDIR
+
+echo '----------------------------------Launching CellProfiler----------------------------------\'
+echo "Launching with pipeline: \$testPipeline"
+
+python \$(which CellProfiler.py) --do-not-build --do-not-fetch  --plugins-directory=\$EBROOTCELLPROFILER/src/CellProfiler/plugins --ij-plugins-directory=\$EBROOTCELLPROFILER/src/CellProfiler/imagej -c -t \$TMPDIR -p "$pipeline" -g \$imageGroup -o "/labdata/incell/cluster_runs/CPJENKINS/JCB_${buildId}" --data-file="./input/linux_imageList.csv"

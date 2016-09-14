@@ -1,0 +1,64 @@
+This software contains unmodified binary redistributions for
+H2 database engine (http://www.h2database.com/),
+which is dual licensed and available under the MPL 2.0
+(Mozilla Public License) or under the EPL 1.0 (Eclipse Public License).
+An original copy of the license agreement can be found at:
+http://www.h2database.com/html/license.html
+
+This software contains unmodified binary redistributions for the Jenkins plugins listed below   
+Jenkins Plugins (https://wiki.jenkins-ci.org/display/JENKINS/Plugins) are typically licensed under the MIT License (https://opensource.org/licenses/MIT) unless otherwise noted
+
+Plugin                              	License
+
+Active Choices Plug-in       		MIT  
+OWASP Markup Formatter Plugin		MIT        
+build-name-setter            		MIT        
+Conditional BuildStep        		MIT        
+Copy Artifact Plugin         		MIT        
+Credentials Plugin           		MIT        
+Environment Injector Plugin  		MIT        
+EZ Templates                 		Apache v2.0
+Git client plugin            		MIT        
+GIT server Plugin            		MIT        
+Groovy                       		Apache v2.0
+Javadoc Plugin               		MIT        
+Multijob plugin              		MIT        
+JUnit Plugin                 		MIT        
+Mailer Plugin                		MIT        
+MapDB API Plugin             		Apache v2.0
+Matrix Project Plugin        		MIT        
+Maven Integration plugin     		MIT        
+Parameterized Trigger plugin 		MIT        
+Rebuilder                    		MIT        
+Run Condition Plugin         		MIT        
+SCM API Plugin               		MIT        
+Script Security Plugin       		MIT        
+Scriptler                    		MIT        
+SSH Credentials Plugin       		MIT        
+SSH plugin                   		MIT    
+Structs Plugin               		MIT        
+Subversion Plug-in           		MIT        
+Summary Display Plugin       		MIT        
+Token Macro Plugin           		MIT              
+Pipeline: SCM Step           		MIT        
+Pipeline: Step API           		MIT        
+Workspace Cleanup Plugin     		MIT    
+                             		
+MIT License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

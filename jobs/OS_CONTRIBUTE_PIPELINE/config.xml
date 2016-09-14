@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>&lt;h2&gt;Upload your CellProfiler pipeline to the Jenkins-HCS pipeline repository&lt;/h2&gt;&#xd;
+Upload a CellProfiler image processing pipeline from your desktop . &#xd;
+&lt;p&gt;The pipeline will be available for use on the Jenkins-HCS server as well as &#xd;
+your desktop CellProfiler client, and it can be shared with other Jenkins-HCS users.&lt;p&gt;&#xd;
+&lt;div class=&quot;task&quot;&gt;          &#xd;
+    &lt;a href=&quot;./build?delay=0sec&quot;&gt;&#xd;
+    &lt;img height=&quot;24&quot; style=&quot;margin: 2px;&quot; alt=&quot;&quot; width=&quot;24&quot; src=&quot;/static/cbb9363a/images/24x24/clock.png&quot;&gt;&#xd;
+      &lt;img id=&quot;cpipeline&quot; alt=&quot;CPPipeline&quot; src=&quot;/userContent/images/cp_logo.png&quot; width=&quot;60&quot;/&gt;&#xd;
+    &lt;/a&gt;&amp;nbsp;&#xd;
+    &lt;a href=&quot;./build?delay=0sec&quot;&gt;Contribute Pipeline&lt;/a&gt;&#xd;
+&lt;/div&gt;&#xd;
+      </description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>3</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>WHAT_IS_THIS</name>
+          <description>&lt;h1 style=&quot;color:blue&quot;&gt;Pipeline and Support Files&lt;/h1&gt;&lt;hr&gt;</description>
+          <defaultValue>This project helps you upload and annotate CellProfiler pipelines so that they can be re-used and shared with others</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.FileParameterDefinition>
+          <name>user_pipeline.cp</name>
+          <description>&lt;h3 style=&quot;color:red&quot;&gt;[Required]
+  &lt;p&gt;&lt;/h3&gt;Choose a working CellProfiler image analysis pipeline to contribute
+  &lt;p&gt;Pipeline must start with a &lt;b&gt;LoadData&lt;/b&gt; module
+</description>
+        </hudson.model.FileParameterDefinition>
+        <hudson.model.FileParameterDefinition>
+          <name>example_image_list.csv</name>
+          <description>&lt;p&gt;An example image list for this pipeline. This is typically the &lt;b&gt;image list used in the LoadData module&lt;/b&gt;
+&lt;p&gt;An image list is not required if the pipeline uses an image list from a URL that the Jenkins server can access.
+&lt;h1 style=&quot;color:blue&quot;&gt;Pipeline Information&lt;/h1&gt;</description>
+        </hudson.model.FileParameterDefinition>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>PIPELINE_LABEL</name>
+          <description>&lt;h3 style=&quot;color:red&quot;&gt;[Required]&lt;/h3&gt;A label that can be used as a pipeline identifier.</description>
+          <randomName>choice-parameter-83308287082586</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>if(binding.&apos;user_pipeline.cp&apos;==null||binding.&apos;user_pipeline.cp&apos;==&apos;&apos;){
+reactiveRefParam=&apos;MY_CONTRIBUTED_PIPELINE&apos;
+}else{
+reactiveRefParam=&quot;${binding.&apos;user_pipeline.cp&apos;.split(&apos;\\.&apos;)[0].toUpperCase().replace(&apos; &apos;,&apos;_&apos;)}&quot;
+}
+return &quot;&lt;input name=\&quot;value\&quot; value=\&quot;${reactiveRefParam}\&quot; class=\&quot;setting-input\&quot; type=\&quot;text\&quot;&gt;&quot;</script>
+            <fallbackScript>return &quot;&lt;input name=\&quot;value\&quot; value=\&quot;Script Error\&quot; class=\&quot;setting-input\&quot; type=\&quot;text\&quot;&gt;&quot;</fallbackScript>
+          </script>
+          <projectName>OS_CONTRIBUTE_PIPELINE</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>user_pipeline.cp</referencedParameters>
+          <choiceType>ET_FORMATTED_HTML</choiceType>
+          <omitValueField>true</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <hudson.model.StringParameterDefinition>
+          <name>PIPELINE_DESCRIPTION</name>
+          <description>A short description of what the pipeline does or how it is used.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
+          <name>AUTHOR</name>
+          <description>Select the name of the contributing pipeline author</description>
+          <randomName>choice-parameter-83308293749651</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>AllUsers.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string></string>
+                <string></string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CONTRIBUTE_PIPELINE</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+        </org.biouno.unochoice.ChoiceParameter>
+        <hudson.model.TextParameterDefinition>
+          <name>AUTHOR_COMMENTS</name>
+          <description>Provide any additional comments that may be useful to others in using this pipeline. Helpful tips on modules and their parameters can be included here if they are not already included in the module notes.
+
+</description>
+          <defaultValue></defaultValue>
+        </hudson.model.TextParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+        <scriptFile>$JENKINS_HOME/jobs/$JOB_NAME/buildScripts/contributePipeline_build.groovy</scriptFile>
+      </scriptSource>
+      <groovyName>Default</groovyName>
+      <parameters>-cp ${JENKINS_HOME}/jobs/OS_CONTRIBUTE_PIPELINE/buildScripts</parameters>
+      <scriptParameters></scriptParameters>
+      <properties></properties>
+      <javaOpts></javaOpts>
+      <classPath></classPath>
+    </hudson.plugins.groovy.Groovy>
+    <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+        <scriptFile>$JENKINS_HOME/userContent/scripts2/writeXMLProperties_cli.groovy</scriptFile>
+      </scriptSource>
+      <groovyName>Default</groovyName>
+      <parameters></parameters>
+      <scriptParameters>-w $WORKSPACE -c ${JENKINS_HOME}/jobs/${JOB_NAME}/buildProps/report.properties</scriptParameters>
+      <properties></properties>
+      <javaOpts></javaOpts>
+      <classPath></classPath>
+    </hudson.plugins.groovy.Groovy>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>*.*</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>true</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.summary__report.ACIPluginPublisher plugin="summary_report@1.15">
+      <name>*.xml</name>
+      <shownOnProjectPage>false</shownOnProjectPage>
+    </hudson.plugins.summary__report.ACIPluginPublisher>
+    <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.29">
+      <patterns>
+        <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>*.*</pattern>
+          <type>INCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+      </patterns>
+      <deleteDirs>false</deleteDirs>
+      <skipWhenFailed>false</skipWhenFailed>
+      <cleanWhenSuccess>true</cleanWhenSuccess>
+      <cleanWhenUnstable>true</cleanWhenUnstable>
+      <cleanWhenFailure>true</cleanWhenFailure>
+      <cleanWhenNotBuilt>true</cleanWhenNotBuilt>
+      <cleanWhenAborted>true</cleanWhenAborted>
+      <notFailBuild>false</notFailBuild>
+      <cleanupMatrixParent>false</cleanupMatrixParent>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.WsCleanup>
+  </publishers>
+  <buildWrappers>
+    <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.6.5">
+      <template>${ENV,var=&quot;PIPELINE_LABEL&quot;}</template>
+      <runAtStart>true</runAtStart>
+      <runAtEnd>true</runAtEnd>
+    </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
+  </buildWrappers>
+</project>

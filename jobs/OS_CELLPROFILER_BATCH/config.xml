@@ -1,0 +1,719 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<com.tikal.jenkins.plugins.multijob.MultiJobProject plugin="jenkins-multijob-plugin@1.21">
+  <actions/>
+  <description>&lt;h2&gt;Prepare CellProfiler Task Arrays for a Linux cluster&lt;/h2&gt;&#xd;
+&lt;li&gt;Supports batching by image list groups&lt;/li&gt;&#xd;
+&lt;li&gt;Supports image list filtering&lt;/li&gt;&#xd;
+&lt;div class=&quot;task&quot;&gt;          &#xd;
+    &lt;a href=&quot;/job/OS_CELLPROFILER_BATCH/build?delay=0sec&quot;&gt;&#xd;
+    &lt;img height=&quot;24&quot; style=&quot;margin: 2px;&quot; alt=&quot;&quot; width=&quot;24&quot; src=&quot;/static/cbb9363a/images/24x24/clock.png&quot; title=&quot;Build Now&quot;&gt;&#xd;
+    &lt;img id=&quot;cpipeline&quot; alt=&quot;CPImageList&quot; src=&quot;\userContent\images\cp_logo.png&quot; title=&quot;Process with CellProfiler&quot; width=&quot;100&quot;/&gt;&#xd;
+     &lt;img id=&quot;filter_32x&quot; alt=&quot;&quot; src=&quot;http://i.msdn.microsoft.com/dynimg/IC156436.gif&quot; title=&quot;Executes on Linux Cluster&quot;&gt;&#xd;
+     &lt;img id=&quot;filter_32x&quot; alt=&quot;&quot; src=&quot;http://i.msdn.microsoft.com/dynimg/IC117892.gif&quot; title=&quot;Restrict processing to user selections&quot;&gt;&#xd;
+    &lt;/a&gt;&amp;nbsp;&#xd;
+    &lt;a href=&quot;/job/OS_CELLPROFILER_BATCH/build?delay=0sec&quot;&gt;Prepare CellProfiler Task Arrays&lt;/a&gt;&#xd;
+&lt;/div&gt;&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>WHAT_IS_THIS</name>
+          <description>&lt;h2&gt;1. Select a Contributed CellProfiler pipeline or &lt;a href=&quot;/job/Contribute_Pipeline/build?delay=0sec&quot;&gt;upload &lt;/a&gt;a new one&lt;/h2&gt;</description>
+          <defaultValue>This project allows you to run CellProfiler on the Linux cluster. You need to have uploaded a CP pipeline and a compatible image list</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
+          <name>CELLPROFILER_VERSION</name>
+          <description>Select the version of CellProfiler to use. &lt;p&gt; &lt;img id=&quot;cellprofiler&quot; alt=&quot;CellProfiler.org&quot; src=&quot;/userContent/images/cp_logo.png&quot; width=&quot;100&quot;&gt; &lt;img id=&quot;filter_32x&quot; alt=&quot;&quot; src=&quot;http://i.msdn.microsoft.com/dynimg/IC156436.gif&quot; title=&quot;Executes on Linux Cluster&quot;&gt;  &lt;h1&gt;Welcome to CellProfiler on the Linux-Cluster!&lt;/h1&gt;</description>
+          <randomName>choice-parameter-1404416359916002</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>def choices=[]
+siteConfigPath=&quot;${System.getenv(&apos;JENKINS_HOME&apos;)}/userContent/properties/jobSite.properties&quot;
+siteConfig=new File(siteConfigPath)
+siteProperties=new Properties()
+siteProperties.load(siteConfig.newDataInputStream())
+cpversions=siteProperties.getProperty(&apos;cp.versions&apos;).split(&apos;,&apos;)
+cpversions.each{
+choices.add(it)
+}
+return choices</script>
+            <fallbackScript>return [&apos;Script Error&apos;]</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+        </org.biouno.unochoice.ChoiceParameter>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
+          <name>PIPELINE</name>
+          <description>&lt;p&gt;Select a &lt;a class=&quot;model-link&quot; href=&quot;/job/OS_CONTRIBUTE_PIPELINE/&quot;&gt;CellProfiler Pipeline&lt;/a&gt;
+</description>
+          <randomName>choice-parameter-130955030630708</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>UC_helper_GetBuildsByNumAsMap.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>vSearchSpace</string>
+                <string>OS_CONTRIBUTE_PIPELINE</string>
+              </entry>
+              <entry>
+                <string>f</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>l</string>
+                <string></string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+        </org.biouno.unochoice.ChoiceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>PIPELINE_GROUPSBY</name>
+          <description></description>
+          <randomName>choice-parameter-1148317096609764</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>import hudson.model.*
+def vBuildRef=PIPELINE
+def propFileName=&apos;autoReviewPipeline.properties&apos;	
+def propKey=&apos;GROUPBY_TAGS&apos;
+
+jenkinsURL=jenkins.model.Jenkins.instance.getRootUrl()
+def runParam=vBuildRef.split(&apos;#&apos;)
+  def jobName=runParam[0]
+  def buildNum=runParam[1]
+
+def propAddress=&quot;${jenkinsURL}job/$jobName/$buildNum/artifact/$propFileName&quot;
+//def propKey= propKey //&apos;metadata&apos;
+
+def props= new Properties()
+props.load(new URL(propAddress).openStream())
+def choices=[]
+if(props.get(propKey)!=null){
+    props.get(propKey).split(&quot;,&quot;).each{
+      choices.add(it)
+        }
+}else{
+ choices.add(&apos;grouping_not_defined&apos;)
+}
+return choices.collect{&quot;Metadata_$it&quot; as String}</script>
+            <fallbackScript>return [&apos;error&apos;]</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>PIPELINE</referencedParameters>
+          <choiceType>ET_UNORDERED_LIST</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <hudson.model.BooleanParameterDefinition>
+          <name>BATCH_BYGROUP</name>
+          <description>&lt;p&gt;Check BATCH_BYGROUP to enable &lt;b&gt;batch processing with Pipeline Image Groups&lt;/b&gt; defined by the PIPELINE_GROUPSBY columns
+  &lt;h2&gt; 2. Select an image list to process&lt;/h2&gt;
+</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>CHANNEL_METADATA</name>
+          <description>&lt;p&gt;(from selected pipeline). They must match relevant IMAGE_METADATA
+&lt;h2&gt; 2. Select an image list to process&lt;/h2&gt;</description>
+          <randomName>choice-parameter-1167684814573919</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>AC_WhenArtifactPropertyStarts.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>propFileName</string>
+                <string>autoReviewPipeline.properties</string>
+              </entry>
+              <entry>
+                <string>propKeyStarts</string>
+                <string>CHANNEL</string>
+              </entry>
+              <entry>
+                <string>vBuildRef</string>
+                <string>$PIPELINE</string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>PIPELINE</referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>BATCH_BY</name>
+          <description>This parameter is passed to the build and creates CellProfiler-g Options</description>
+          <randomName>choice-parameter-1148317109676788</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>import hudson.model.*
+def vBuildRef=PIPELINE
+def propFileName=&apos;autoReviewPipeline.properties&apos;	
+def propKey=&apos;GROUPBY_TAGS&apos;
+
+jenkinsURL=jenkins.model.Jenkins.instance.getRootUrl()
+def runParam=vBuildRef.split(&apos;#&apos;)
+  def jobName=runParam[0]
+  def buildNum=runParam[1]
+
+def propAddress=&quot;${jenkinsURL}job/$jobName/$buildNum/artifact/$propFileName&quot;
+//def propKey= propKey //&apos;metadata&apos;
+
+def props= new Properties()
+props.load(new URL(propAddress).openStream())
+def choices=[]
+if(props.get(propKey)!=null){
+    props.get(propKey).split(&quot;,&quot;).each{
+      choices.add(it)
+        }
+}else{
+ choices.add(&apos;grouping_not_defined&apos;)
+}
+metaString=choices.collect{&quot;Metadata_$it&quot; as String}.join(&apos;,&apos;)
+
+return &quot;&lt;input name=\&quot;value\&quot; value=\&quot;${metaString}\&quot; class=\&quot;setting-input\&quot; type=\&quot;text\&quot;&gt;&quot;
+</script>
+            <fallbackScript>return[&apos;Error&apos;]</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>PIPELINE</referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>true</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
+          <name>GENERATED_IMAGE_LIST</name>
+          <description>&lt;p&gt;Select a &lt;a class=&quot;model-link&quot; href=&quot;/job/OS_CONTRIBUTE_IMAGELIST/&quot;&gt;CellProfiler Image List&lt;/a&gt;
+
+</description>
+          <randomName>choice-parameter-2460727034621439</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>UC_helper_GetBuildsByNumAsMap.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>vSearchSpace</string>
+                <string>OS_CONTRIBUTE_IMAGELIST</string>
+              </entry>
+              <entry>
+                <string>f</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>l</string>
+                <string></string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+        </org.biouno.unochoice.ChoiceParameter>
+        <hudson.model.BooleanParameterDefinition>
+          <name>MERGE_CSV</name>
+          <description>Leave this checked if you want to automatically merge the output from CellProfiler. After merging all intermediate output files are deleted automatically&lt;p&gt;
+In some special circumstances you way want to un-check this option so you have more control over what should be merged at the end of the run.
+&lt;h2&gt;3. Annotate this build&lt;/h2&gt;</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>BUILD_LABEL</name>
+          <description>This label will be used as the BUILD NAME and can assist you in easily identifying this build</description>
+          <randomName>choice-parameter-1167684880789877</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>UC_RefHelper_getSimpleBuildLabel.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>vCode</string>
+                <string>Analyzed</string>
+              </entry>
+              <entry>
+                <string>vDataSet</string>
+                <string>$GENERATED_IMAGE_LIST</string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>GENERATED_IMAGE_LIST</referencedParameters>
+          <choiceType>ET_FORMATTED_HTML</choiceType>
+          <omitValueField>true</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <hudson.model.TextParameterDefinition>
+          <name>RUN_DESCRIPTION</name>
+          <description>&lt;p&gt;Provide a brief description about this CellProfiler run
+  &lt;hr/&gt;
+  &lt;h2&gt;4. Select the subset of the image list to be processed&lt;/h2&gt;
+</description>
+          <defaultValue></defaultValue>
+        </hudson.model.TextParameterDefinition>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>OPTIONAL</name>
+          <description></description>
+          <randomName>choice-parameter-479448126777006</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>html=&apos;&apos;&apos;
+
+&lt;p&gt; Select from the image list PROPERTIES, OPERATOR and PROP_VALUE to create a &apos;WHERE&apos; selection clause
+&lt;p&gt; Click the &lt;b&gt;ADD&lt;/b&gt; button to add it to the QUERY_PLAN. &lt;b&gt;Repeat as necessary&lt;/b&gt; to add more selection clauses
+&lt;p&gt;To delete plan entries check them and click DELETE. To clear all, click RESET
+&apos;&apos;&apos;
+return html</script>
+            <fallbackScript></fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>ET_FORMATTED_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>IMAGELIST_URL</name>
+          <description>A HIDDEN reference parameter [required] for referencing a user selectable data set</description>
+          <randomName>choice-parameter-1857158354187194</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>AC_RefHelper_getSelectArtifactUrl.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>vBuildRef</string>
+                <string>$GENERATED_IMAGE_LIST</string>
+              </entry>
+              <entry>
+                <string>vSelector</string>
+                <string>linux_imageList</string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>GENERATED_IMAGE_LIST</referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>true</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@1.4">
+          <name>PROPERTIES</name>
+          <description></description>
+          <randomName>choice-parameter-36023349581860</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>if (!binding.variables.containsKey(&quot;IMAGELIST_URL&quot;))
+   return [&apos;DATA_URL_NOTSET&apos;]
+
+if(IMAGELIST_URL==&apos;FAILED UNIQUENESS TEST&apos;){
+return[&apos;ERROR: JData file is not Unique!&apos;]}else{
+def propAddress=IMAGELIST_URL.replace(&apos;.csv&apos;,&apos;.properties&apos;).replace(&apos;linux_&apos;,&apos;&apos;)
+def propKey= &apos;measurements&apos;
+
+def props= new Properties()
+props.load(new URL(propAddress).openStream())
+def choices=[]
+    props.keySet().findAll { item -&gt; item.contains(&apos;Barcode&apos;)||item.contains(&apos;Row&apos;)||item.contains(&apos;Column&apos;)||item.contains(&apos;Time&apos;)||item.contains(&apos;Field&apos;)||item.contains(&apos;Z&apos;)}.each{
+      choices.add(it)
+        }
+return choices.sort()
+}</script>
+            <fallbackScript>return [&apos;ERROR&apos;]</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>IMAGELIST_URL,GENERATED_IMAGE_LIST</referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
+          <name>OPERATOR</name>
+          <description></description>
+          <randomName>choice-parameter-479448136770734</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>return[&apos;equal&apos;,&apos;&lt;&apos;,&apos;&lt; equal&apos;,&apos;&gt;&apos;,&apos;&gt; equal&apos;,&apos;&lt;&gt;&apos;]</script>
+            <fallbackScript></fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+        </org.biouno.unochoice.ChoiceParameter>
+        <org.biouno.unochoice.CascadeChoiceParameter plugin="uno-choice@1.4">
+          <name>PROP_VALUE</name>
+          <description></description>
+          <randomName>choice-parameter-2537147518476231</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>if (!binding.variables.containsKey(&quot;PROPERTIES&quot;))
+   return [&apos;Properties not set&apos;]
+def propAddress=IMAGELIST_URL.replace(&apos;.csv&apos;,&apos;.properties&apos;).replace(&apos;linux_&apos;,&apos;&apos;)
+def propKey=PROPERTIES
+
+def props= new Properties()
+props.load(new URL(propAddress).openStream())
+def choices=[]
+propVal=props.get(propKey).toString()
+propVal.split(&apos;,&apos;).each{
+choices.add(it as String)
+}
+return choices</script>
+            <fallbackScript>return &apos;&lt;input name=&quot;value&quot; value=&quot;&apos;+&apos;ERROR_DATASET&apos;+&apos;&quot; class=&quot;setting-input&quot; type=&quot;text&quot;&gt;&apos;</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>IMAGELIST_URL,PROPERTIES</referencedParameters>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>true</filterable>
+        </org.biouno.unochoice.CascadeChoiceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>QUERY_PLAN</name>
+          <description></description>
+          <randomName>choice-parameter-2460727038159878</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>html=&apos;&apos;&apos;&lt;div id=&quot;jsPlan&quot;&gt;
+&lt;input id=&quot;addJsEntry&quot; type=&quot;button&quot; value=&quot;ADD&quot; onclick=&quot;addPlannedAction()&quot;/&gt;
+&lt;input id=&quot;delJsEntry&quot; name=&quot;subject&quot; type=&quot;button&quot; value=&quot;DELETE&quot; onclick=&quot;deletePlannedActionv()&quot;/&gt;
+&lt;input id=&quot;resetAllEntries&quot; name=&quot;subject&quot; type=&quot;button&quot; value=&quot;RESET&quot;onclick=&quot;resetPlannedAction()&quot;/&gt;
+&lt;p&gt;
+&lt;/div&gt;&apos;&apos;&apos;
+return html</script>
+            <fallbackScript></fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>ET_FORMATTED_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>hidden_PageElements</name>
+          <description>return &apos;&apos;&apos;
+&lt;input name=&quot;value&quot; value=&quot;ERROR in SCRIPT&quot; class=&quot;setting-input&quot; type=&quot;text&quot;&gt;
+&apos;&apos;&apos;</description>
+          <randomName>choice-parameter-2537147550339219</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>hidden_html=&quot;&quot;&quot;
+&lt;input id=&quot;planAction&quot; value=&quot;Select&quot; type=&quot;hidden&quot;/&gt;
+&lt;input id=&quot;dsProp&quot; value=&quot;${PROPERTIES}&quot; type=&quot;hidden&quot;/&gt; 
+&lt;input id=&quot;dsOper&quot; value=&quot;${OPERATOR.replace(&apos;equal&apos;,&apos;=&apos;)}&quot; type=&quot;hidden&quot;/&gt; 
+&lt;input id=&quot;propValue&quot; value=&quot;${PROP_VALUE}&quot; type=&quot;hidden&quot;/&gt;&quot;&quot;&quot;
+
+return hidden_html</script>
+            <fallbackScript></fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>PROPERTIES,OPERATOR,PROP_VALUE</referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>PLAN_ENTRIES</name>
+          <description>The PLAN entries</description>
+          <randomName>choice-parameter-2537147556410381</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>html=&apos;&apos;&apos;&lt;input id=&quot;xtPlan&quot; name=&quot;value&quot; class=&quot;setting-input&quot; type=&quot;text&quot; /&gt;&apos;&apos;&apos;
+
+return html</script>
+            <fallbackScript>return &quot;&lt;p&gt; Error in Script&quot;</fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>true</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>helperJavaScript</name>
+          <description></description>
+          <randomName>choice-parameter-2537722515661627</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <script>helperJavaScript=&quot;&quot;&quot;
+&lt;script type=&quot;text/javascript&quot;&gt;
+/* Function creates map when both key and value are provided from  CV selection */
+function addPlannedAction() {
+var planAction= document.getElementById(&quot;planAction&quot;);
+var dsProp= document.getElementById(&quot;dsProp&quot;);
+var dsOper= document.getElementById(&quot;dsOper&quot;).value;
+var propValue = document.getElementById(&quot;propValue&quot;).value;
+var planVal=&apos;&apos;;
+planVal=planVal.concat(&quot;[&quot;,&quot;action:\\&quot;&quot;,planAction.value,&quot;\\&quot;,operator:\\&quot;&quot;,dsOper,&quot;\\&quot;,property:\\&quot;&quot;,dsProp.value,&quot;\\&quot;,value:\\&quot;&quot;,propValue,&quot;\\&quot;&quot;,&quot;]&quot;);
+document.getElementById(&quot;xtPlan&quot;).value = document.getElementById(&quot;xtPlan&quot;).value.concat(planVal);
+/* add checkbox option */
+addAnnotationCheckBox(planAction, &quot;dsProp&quot;, dsOper, propValue, planVal)
+}
+
+/* a generic function to add an annotation action checkbox ---------------------------------------*/
+
+function addAnnotationCheckBox(mNode, mKey, mOper, mValue, planValue){
+	var dNode=document.getElementById(&quot;jsPlan&quot;);
+	var x = document.createElement(&quot;INPUT&quot;);
+	x.setAttribute(&quot;type&quot;, &quot;checkbox&quot;);
+	x.setAttribute(&quot;name&quot;, &quot;annoAction&quot;);
+        x.setAttribute(&quot;value&quot;, planValue);
+	dNode.appendChild(x); 
+	var y = document.createElement(&quot;label&quot;);
+	y.setAttribute(&quot;class&quot;, &quot;attach-previous&quot;);
+        var labelFor=mNode.value+&apos;.&apos;+document.getElementById(mKey).value+&apos;.&apos;+mValue;
+         x.title= labelFor;
+        y.setAttribute(&quot;for&quot;, labelFor);
+	y.innerHTML=mNode.value+&apos;.&apos;+document.getElementById(mKey).value+mOper+mValue+&apos;&lt;br/&gt;&apos;;
+	dNode.appendChild(y); 
+}
+
+/* the action is deleted from checklist as well as from hidden xtPlan text input */
+function deletePlannedActionv(){
+  jQuery( document ).ready(function() {
+                var selected= [];
+            jQuery.each(jQuery(&quot;input[name=&apos;annoAction&apos;]:checked&quot;), function(){            
+                selected.push(jQuery(this).val());
+           delEntry=jQuery(this).val();
+            console.log(&quot;Deleting:&quot;+ delEntry);
+            document.getElementById(&quot;xtPlan&quot;).value=document.getElementById(&quot;xtPlan&quot;).value.replace(delEntry,&apos;&apos;);
+           label2remove=jQuery(this).attr(&apos;title&apos;);
+            console.log(&quot;Removing:&quot;+label2remove);
+           jQuery(&apos;label[for=&quot;&apos;+label2remove+&apos;&quot;]&apos;).remove();           
+           jQuery(this).remove();
+            });
+            //alert(&quot;Deleted: &quot; +selected.join(&quot;, &quot;));
+});
+}
+
+function resetPlannedAction(){
+document.getElementById(&quot;xtPlan&quot;).value=&apos;&apos;;
+  jQuery( document ).ready(function() {
+            jQuery.each(jQuery(&quot;input[name=&apos;annoAction&apos;]&quot;), function(){            
+           label2remove=jQuery(this).attr(&apos;title&apos;);
+           jQuery(&apos;label[for=&quot;&apos;+label2remove+&apos;&quot;]&apos;).remove();           
+           jQuery(this).remove();
+            });
+            //alert(&quot;Deleted: &quot; +selected.join(&quot;, &quot;));
+});
+}
+
+
+&lt;/script&gt;
+
+&quot;&quot;&quot; //triple doubles
+
+return helperJavaScript</script>
+            <fallbackScript></fallbackScript>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters></referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+        <org.biouno.unochoice.DynamicReferenceParameter plugin="uno-choice@1.4">
+          <name>IMAGE_METADATA</name>
+          <description>&lt;p&gt;(from selected Image List). They must match relevant CHANNEL_METADATA
+&lt;h2&gt;4. Data Post-processing&lt;/h2&gt;
+</description>
+          <randomName>choice-parameter-1164810642724424</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.ScriptlerScript">
+            <scriptlerScriptId>AC_WhenArtifactPropertyStarts.groovy</scriptlerScriptId>
+            <parameters class="linked-hash-map">
+              <entry>
+                <string>propFileName</string>
+                <string>imageList.properties</string>
+              </entry>
+              <entry>
+                <string>propKeyStarts</string>
+                <string>Image</string>
+              </entry>
+              <entry>
+                <string>vBuildRef</string>
+                <string>$GENERATED_IMAGE_LIST</string>
+              </entry>
+            </parameters>
+          </script>
+          <projectName>OS_CELLPROFILER_BATCH</projectName>
+          <parameters class="linked-hash-map"/>
+          <referencedParameters>GENERATED_IMAGE_LIST</referencedParameters>
+          <choiceType>ET_FORMATTED_HIDDEN_HTML</choiceType>
+          <omitValueField>false</omitValueField>
+        </org.biouno.unochoice.DynamicReferenceParameter>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder plugin="conditional-buildstep@1.3.5">
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.0"/>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.logic.Not" plugin="run-condition@1.0">
+        <condition class="org.jenkins_ci.plugins.run_condition.core.StringsMatchCondition">
+          <arg1>$PLAN_ENTRIES</arg1>
+          <arg2></arg2>
+          <ignoreCase>false</ignoreCase>
+        </condition>
+      </runCondition>
+      <conditionalbuilders>
+        <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+          <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+            <scriptFile>${JENKINS_HOME}/jobs/${JOB_NAME}/buildScripts/selecOnImageListMeta.groovy</scriptFile>
+          </scriptSource>
+          <groovyName>Default</groovyName>
+          <parameters></parameters>
+          <scriptParameters>-i $IMAGELIST_URL -o $WORKSPACE -q System.getenv().PLAN_ENTRIES</scriptParameters>
+          <properties></properties>
+          <javaOpts>-Xmx4000M</javaOpts>
+          <classPath>$JENKINS_HOME/userContent/lib/h2-1.3.176.jar</classPath>
+        </hudson.plugins.groovy.Groovy>
+        <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+          <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+            <scriptFile>${JENKINS_HOME}/jobs/${JOB_NAME}/buildScripts/trackSelectImageMeta.groovy</scriptFile>
+          </scriptSource>
+          <groovyName>Default</groovyName>
+          <parameters></parameters>
+          <scriptParameters>$WORKSPACE/linux_imageList.csv</scriptParameters>
+          <properties></properties>
+          <javaOpts></javaOpts>
+          <classPath></classPath>
+        </hudson.plugins.groovy.Groovy>
+        <EnvInjectBuilder plugin="envinject@1.92.1">
+          <info>
+            <propertiesContent>IMAGELIST_LOGICURL=$JOB_URL/ws/linux_imageList.csv</propertiesContent>
+          </info>
+        </EnvInjectBuilder>
+      </conditionalbuilders>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+    <org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder plugin="conditional-buildstep@1.3.5">
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.0"/>
+      <runCondition class="org.jenkins_ci.plugins.run_condition.core.StringsMatchCondition" plugin="run-condition@1.0">
+        <arg1>$PLAN_ENTRIES</arg1>
+        <arg2></arg2>
+        <ignoreCase>false</ignoreCase>
+      </runCondition>
+      <conditionalbuilders>
+        <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+          <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+            <scriptFile>${JENKINS_HOME}/jobs/${JOB_NAME}/buildScripts/arg_UC_copyArtifact.groovy</scriptFile>
+          </scriptSource>
+          <groovyName>Default</groovyName>
+          <parameters></parameters>
+          <scriptParameters>$GENERATED_IMAGE_LIST *.properties archive</scriptParameters>
+          <properties></properties>
+          <javaOpts></javaOpts>
+          <classPath></classPath>
+        </hudson.plugins.groovy.Groovy>
+        <EnvInjectBuilder plugin="envinject@1.92.1">
+          <info>
+            <propertiesContent>IMAGELIST_LOGICURL=$IMAGELIST_URL</propertiesContent>
+          </info>
+        </EnvInjectBuilder>
+      </conditionalbuilders>
+    </org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder>
+    <EnvInjectBuilder plugin="envinject@1.92.1">
+      <info>
+        <propertiesFilePath>./imageList.properties</propertiesFilePath>
+        <propertiesContent>README=${CP_MERGE}/${BUILD_ID}
+dataShare=incell</propertiesContent>
+      </info>
+    </EnvInjectBuilder>
+    <org.jenkinsci.plugins.scriptler.builder.ScriptlerBuilder plugin="scriptler@2.9">
+      <builderId>1467142281011_6</builderId>
+      <scriptId>cpSgeTaskArray.groovy</scriptId>
+      <propagateParams>false</propagateParams>
+      <parameters>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vImageListProps</name>
+          <value>${JENKINS_URL}job/$JOB_NAME/ws/imageList.properties</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vGroupMeta</name>
+          <value>$BATCH_BY</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vPipelineRef</name>
+          <value>$PIPELINE</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vOutfolder</name>
+          <value>$WORKSPACE</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vBuildNumber</name>
+          <value>$BUILD_NUMBER</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vBuildId</name>
+          <value>$BUILD_ID</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vBatchByGroup</name>
+          <value>$BATCH_BYGROUP</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+        <org.jenkinsci.plugins.scriptler.config.Parameter>
+          <name>vTemplatePath</name>
+          <value>${JENKINS_HOME}/jobs/$JOB_NAME/buildScripts</value>
+        </org.jenkinsci.plugins.scriptler.config.Parameter>
+      </parameters>
+    </org.jenkinsci.plugins.scriptler.builder.ScriptlerBuilder>
+    <hudson.plugins.groovy.Groovy plugin="groovy@1.29">
+      <scriptSource class="hudson.plugins.groovy.FileScriptSource">
+        <scriptFile>$JENKINS_HOME/userContent/scripts2/writeXMLProperties_cli.groovy</scriptFile>
+      </scriptSource>
+      <groovyName>Default</groovyName>
+      <parameters></parameters>
+      <scriptParameters>-w $WORKSPACE -c ${JENKINS_HOME}/jobs/${JOB_NAME}/buildProps/report.properties</scriptParameters>
+      <properties></properties>
+      <javaOpts></javaOpts>
+      <classPath></classPath>
+    </hudson.plugins.groovy.Groovy>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>*.*</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.summary__report.ACIPluginPublisher plugin="summary_report@1.15">
+      <name>*.xml</name>
+      <shownOnProjectPage>false</shownOnProjectPage>
+    </hudson.plugins.summary__report.ACIPluginPublisher>
+    <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.30">
+      <patterns class="empty-list"/>
+      <deleteDirs>false</deleteDirs>
+      <skipWhenFailed>false</skipWhenFailed>
+      <cleanWhenSuccess>true</cleanWhenSuccess>
+      <cleanWhenUnstable>true</cleanWhenUnstable>
+      <cleanWhenFailure>false</cleanWhenFailure>
+      <cleanWhenNotBuilt>true</cleanWhenNotBuilt>
+      <cleanWhenAborted>true</cleanWhenAborted>
+      <notFailBuild>false</notFailBuild>
+      <cleanupMatrixParent>false</cleanupMatrixParent>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.WsCleanup>
+  </publishers>
+  <buildWrappers>
+    <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.6.5">
+      <template>${ENV,var=&quot;BUILD_LABEL&quot;}</template>
+      <runAtStart>true</runAtStart>
+      <runAtEnd>true</runAtEnd>
+    </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
+  </buildWrappers>
+  <pollSubjobs>false</pollSubjobs>
+</com.tikal.jenkins.plugins.multijob.MultiJobProject>
