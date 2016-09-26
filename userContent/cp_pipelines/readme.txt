@@ -1,6 +1,7 @@
 Example CellProfiler Pipelines
 
 This folder contains example CellProfiler pipelines that import images using the LoadData module.
+Corresponding image lists can be found under JENKINS_HOME/userContent/cp_imageLists
 
 Note: All pipelines used in Jenkins-LSCI must use the LoadData module to load and associate image files with metadata.
 

@@ -214,12 +214,12 @@ The ‘OS\_CONTRIBUTE\_PIPELINE’ job allows users to annotate and upload a Cel
 
 #### Generic CellProfiler Image Analysis Pipelines
 
-The following image analysis pipelines are made available with the Jenkins-LSCI system to provide example starter pipelines.
+The following image analysis pipelines are made available with the Jenkins-LSCI system to provide example starter pipelines. Read the associated [notes](./userContent/cp_pipelines/readme.txt). All pipelines used in Jenkins-LSCI must use the LoadData module to load and associate image files with metadata.
 
 | Pipeline Name          | Utility                                                                     |
 |------------------------|-----------------------------------------------------------------------------|
-| Cytoplasmic Intensity  | Determine the cytoplasmic intensity of a fluorescent cell marker            |
-| Translocation protocol | Determine the nuclear to cytoplasmic ratio of a marker that can translocate |
+| [Cytoplasmic Intensity](./userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the cytoplasmic intensity of a fluorescent cell marker            |
+| [Translocation protocol](./userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the nuclear to cytoplasmic ratio of a marker that can translocate |
 
 #### Build Form Example
 
