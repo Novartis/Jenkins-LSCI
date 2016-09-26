@@ -1,4 +1,6 @@
 #Jenkins-LSCI (Life Science Continuous Integration)
+<img src="./userContent/images/Jenkins_LifeSci.png"/>
+
 ##What can Jenkins-LSCI do?
 Jenkins-LSCI enables research scientists to build workflows and data pipelines on the same robust framework and plugin ecosystem as [Jenkins-CI](https://jenkins.io/), the widely used continuous integration server that supports building, deploying and automating any software project. 
 
@@ -24,18 +26,18 @@ These related Jenkins-LSCI jobs enable users to:
 
 ### OS\_CONTRIBUTE\_PIPELINE
 
-The ‘OS\_CONTRIBUTE\_PIPELINE’ job allows users to annotate and upload a CellProfiler pipeline to the Jenkins server. The build generates a pipeline summary report combining user and internal pipeline annotations. The pipeline is stored on the Jenkins server and can be used by CellProfiler running on a remote cluster or workstation, or on the user’s desktop.
+The â€˜OS\_CONTRIBUTE\_PIPELINEâ€™ job allows users to annotate and upload a CellProfiler pipeline to the Jenkins server. The build generates a pipeline summary report combining user and internal pipeline annotations. The pipeline is stored on the Jenkins server and can be used by CellProfiler running on a remote cluster or workstation, or on the userâ€™s desktop.
 
 ### OS\_CONTRIBUTE\_IMAGELIST
 
-The ‘OS\_CONTRIBUTE\_IMAGELIST’ job facilitates the creation and management of correctly formatted image lists that can be used for processing large number of images through a CellProfiler pipeline. Image processing is highly dependent on image acquisition and experimental metadata (wavelengths, plates, wells, fields, time-points, Z-stacks etc.) We support the direct parsing of metadata generated during the image acquisition phase from the **InCell** and **Yokogawa** scientific imagers.
+The â€˜OS\_CONTRIBUTE\_IMAGELISTâ€™ job facilitates the creation and management of correctly formatted image lists that can be used for processing large number of images through a CellProfiler pipeline. Image processing is highly dependent on image acquisition and experimental metadata (wavelengths, plates, wells, fields, time-points, Z-stacks etc.) We support the direct parsing of metadata generated during the image acquisition phase from the **InCell** and **Yokogawa** scientific imagers.
 
 
-In the absence of instrument metadata, image lists can be created using the CellProfiler desktop client. These image lists can then be easily adapted using the ‘OS\_CONTRIBUTE\_IMAGELIST’ job to formats compatible with high performance cluster analysis.
+In the absence of instrument metadata, image lists can be created using the CellProfiler desktop client. These image lists can then be easily adapted using the â€˜OS\_CONTRIBUTE\_IMAGELISTâ€™ job to formats compatible with high performance cluster analysis.
 
 ### OS\_CELLPROFILER\_BATCH
 
-The ‘OS\_CELLPROFILER\_BATCH’ job allows users to generate correctly formatted CellProfiler task array scripts that can be submitted to a Linux cluster for parallel processing. The job builds take as input a reference to an ‘OS\_CONTRIBUTE\_PIPELINE’ build and a reference to an ‘OS\_CONTRIBUTE\_IMAGELIST’ build. Theses builds define the two inputs for a typical CellProfiler run, the image processing pipeline and the image list.
+The â€˜OS\_CELLPROFILER\_BATCHâ€™ job allows users to generate correctly formatted CellProfiler task array scripts that can be submitted to a Linux cluster for parallel processing. The job builds take as input a reference to an â€˜OS\_CONTRIBUTE\_PIPELINEâ€™ build and a reference to an â€˜OS\_CONTRIBUTE\_IMAGELISTâ€™ build. Theses builds define the two inputs for a typical CellProfiler run, the image processing pipeline and the image list.
 
 The task array script is currently formatted for the [UNIVA grid engine](http://www.univa.com/products/) scheduler and it should require little effort to customize for other cluster schedulers. However, due to the non-standardized, local, Linux cluster environment and installed software dependencies, the task array submission process is left up to the user. In addition, CellProfiler and its library dependencies must be installed and correctly working on the destination Linux cluster.
 
