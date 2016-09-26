@@ -214,12 +214,12 @@ The ‘OS\_CONTRIBUTE\_PIPELINE’ job allows users to annotate and upload a Cel
 
 #### Generic CellProfiler Image Analysis Pipelines
 
-The following image analysis pipelines are made available with the Jenkins-LSCI system to provide example starter pipelines. Read the associated [notes](./userContent/cp_pipelines/readme.txt). All pipelines used in Jenkins-LSCI must use the LoadData module to load and associate image files with metadata.
+The following image analysis pipelines are made available with the Jenkins-LSCI system to provide example starter pipelines. Read the associated [notes](/userContent/cp_pipelines/readme.txt). All pipelines used in Jenkins-LSCI must use the LoadData module to load and associate image files with metadata.
 
 | Pipeline Name          | Utility                                                                     |
 |------------------------|-----------------------------------------------------------------------------|
-| [Cytoplasmic Intensity](./userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the cytoplasmic intensity of a fluorescent cell marker            |
-| [Translocation protocol](./userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the nuclear to cytoplasmic ratio of a marker that can translocate |
+| [Cytoplasmic Intensity](/userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the cytoplasmic intensity of a fluorescent cell marker            |
+| [Translocation protocol](/userContent/cp_pipelines/cytoplasmic_intensity.cppipe) | Determine the nuclear to cytoplasmic ratio of a marker that can translocate |
 
 #### Build Form Example
 
@@ -344,10 +344,10 @@ Jenkins-CI and Jenkins-Plugins
 
 A Jenkins-CI server installation depends on the core Jenkins-CI (<http://jenkins-ci.org>) software that is freely available on the web, and a number of required **plugins** that are also freely available from the Jenkins-CI plugin repository (<https://wiki.jenkins-ci.org/display/JENKINS/Plugins>).
 
-| #### Software        | #### Link                                      | #### Category | #### Comment                                                      |
+|  Software        |  Link                                      |  Category |  Comment                                                      |
 |----------------------|------------------------------------------------|---------------|-------------------------------------------------------------------|
-| Jenkins-CI (Windows) | <http://mirrors.jenkins-ci.org/windows/latest> | Installation  | Download installation software                                    |
-| Jenkins-CI (Linux)   | <http://jenkins-ci.org/>                       | Installation  | Download installation package for appropriate version of Linux-OS |
+| Jenkins-CI (Windows) | <http://mirrors.jenkins-ci.org/windows/latest> | Installation  | Download Jenkins-CI for Windows                                    |
+| Jenkins-CI (Linux)   | <http://jenkins-ci.org/>                       | Installation  | Download Jenkins-CI package for appropriate version of Linux-OS |
 
 Follow the installation directions relevant to the OS on which Jenkins will be running found on the [Jenkins-CI wiki](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins)
 
@@ -355,23 +355,32 @@ Follow the installation directions relevant to the OS on which Jenkins will be r
 
 We will refer to the Jenkins installation directory as the JENKINS\_HOME. For a typical Windows Jenkins installation JENKINS\_HOME may look like: D:\\DEVTOOLS\\Jenkins
 
-JENKINS\_HOME contains additional folders with standardized names such as:
-
--   jobs
-
--   log
-
--   plugins
-
--   scriptler
-
--   userContent
-
--   users
-
--   war
-
--   workspace
+This folder will contain additional standardized folders but may vary slightly depending on the Jenkins-CI plugins used and other configuration options:
+```
+JENKINS_HOME
+|	|	config.xml (jenkins root configuration)
+|	|   *.xml (other sidte-wide configuration files)
+|
+|__jobs
+|	|	
+|	|__	[JOBNAME] (subdirectory for each job)
+|
+|__log
+|
+|__plugins (installed plugins)
+|
+|__scriptler (reusable groovy scripts)
+|
+|__userContent (static content that can be served from a URL)
+|
+|__users (local security and personalization)
+|
+|__war (server files)
+|
+|__workspace (temporary workspace for job builds)
+	|
+	|__	[JOBNAME] (subdirectory for each job)
+```
 
 Jenkins-LSCI Job Folder Structure
 ---------------------------------
@@ -380,20 +389,29 @@ Jenkins-LSCI jobs are installed in the JENKINS\_HOME/jobs folder.
 
 The configuration file for each job, and the associated scripts and properties are in a corresponding folder with the same name. The typical folder structure is shown in the example below:
 
-JENKINS\_HOME
-
-|\_\_ jobs
-
-> |\_\_ OS\_CONTRIBUTE\_IMAGELIST
->
-> |
->
-> |\_\_ buildScripts
->
-> |\_\_ buildProps
->
-> config.xml
-
+```
+JENKINS_HOME
+|
+|__	jobs
+	|
+	|__OS_CONTRIBUTE_PIPELINE
+	|	|	config.xml (job configuration file)
+	|
+	|__buildProps
+	|	|	action.csv
+	|	|	report.properties
+	|
+	|__buildScripts
+	|	|	adaptImageList.groovy
+	|	|	xdceSlurperMapRecurese.groovy
+	|	|    ...(other scripts)
+	|
+	|__	builds
+		|
+		|__	1
+		|__	2
+		|__	n...	
+```
 Loading New Job Definitions
 ---------------------------
 
