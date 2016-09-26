@@ -6,7 +6,7 @@ Prerequisites
 
 ### Java JDK
 
-Jenkins-CI is a Java application and as such it requires that [Java](https://www.java.com/en/download/help/index_installing.xml) is installed on the workstation that will be configured as the Jenkins server. It is recommended that a recent version of the Java JDK is installed ( our Jenkins-LifeSci implementation has been successfully tested with Java version 1.8.x)
+Jenkins-CI is a Java application and as such it requires that [Java](https://www.java.com/en/download/help/index_installing.xml) is installed on the workstation that will be configured as the Jenkins server. It is recommended that a recent version of the Java JDK is installed ( This Jenkins-LSCI implementation has been successfully tested with Java version 1.8.x)
 
 ### Groovy SDK
 
