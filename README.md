@@ -42,20 +42,20 @@ The ‘OS\_CELLPROFILER\_BATCH’ job allows users to generate correctly formatt
 The task array script is currently formatted for the [UNIVA grid engine](http://www.univa.com/products/) scheduler and it should require little effort to customize for other cluster schedulers. However, due to the non-standardized, local, Linux cluster environment and installed software dependencies, the task array submission process is left up to the user. In addition, CellProfiler and its library dependencies must be installed and correctly working on the destination Linux cluster.
 
 ##Test Drive Jenkins
-If you would like to quickly [test drive Jenkins-CI](https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins) you can [download jenkins.war](http://mirrors.jenkins-ci.org/war/latest/jenkins.war) directly and launch it by executing ```java -jar jenkins.war```.  Once it launches, visit ```http://localhost:8080/``` in your browser to get to the dashboard. On Windows, you can even choose to install [Jenkins as a service](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service) afterwards.
+If you would like to quickly [test drive Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins) you can [download jenkins.war](http://mirrors.jenkins-ci.org/war/latest/jenkins.war) directly and launch it by executing ```java -jar jenkins.war```.  Once it launches, visit ```http://localhost:8080/``` in your browser to get to the dashboard. On Windows, you can even choose to install [Jenkins as a service](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service) afterwards.
 
 ##Jenkins-LSCI Installation & Configuration
 A fully functional Jenkins-LSCI server supporting CellProfiler image analysis requires the installation and configuraton of the following software components:
 
  1. A mirror of the Jenkins-LSCI project code (from git)
- 2. [Jenkins-CI](https://jenkins.io/) and required Jenkins plugins
+ 2. [Jenkins](https://jenkins.io/) and required Jenkins plugins
  3. [CellProfiler](http://cellprofiler.org)
 
 
 Please, refer to the [Jenkins-LSCI Installation and Usage](./userContent/docs/installation_and_use.md) for more details
 
 ##Getting Help
-For general assistance with Jenkins-CI you can consult the [Jenkins Google user group](https://groups.google.com/forum/#!forum/jenkinsci-users) and the extensive, community-maintained [Jenkins-CI wiki](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins)
+For general assistance with Jenkins you can consult the [Jenkins Google user group](https://groups.google.com/forum/#!forum/jenkinsci-users) and the extensive, community-maintained [Jenkins wiki](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins)
 
 For general assistance with CellProfiler you can consult the [CellProfiler User Group](http://forum.cellprofiler.org/)
 
