@@ -6,11 +6,11 @@ Prerequisites
 
 ### Java JDK
 
-Jenkins-CI is a Java application and as such it requires that [Java](https://www.java.com/en/download/help/index_installing.xml) is installed on the workstation that will be configured as the Jenkins server. It is recommended that a recent version of the Java JDK is installed ( This Jenkins-LSCI implementation has been successfully tested with Java version 1.8.x)
+Jenkins is a Java application and as such it requires that [Java](https://www.java.com/en/download/help/index_installing.xml) is installed on the workstation that will be configured as the Jenkins server. It is recommended that a recent version of the Java JDK is installed ( This Jenkins-LSCI implementation has been successfully tested with Java version 1.8.x)
 
 ### Groovy SDK
 
-Groovy (<http://groovy-lang.org/>) is the native scripting language in Jenkins. Most of the provided scripts are implemented in Groovy. The latest version of the Groovy SDK (2.4.x as of this writing) is recommended. Jenkins-CI can [directly install tools](https://wiki.jenkins-ci.org/display/JENKINS/Tool+Auto-Installation) and one of them is Groovy. If you don’t already have Groovy installed on your server you can configure Jenkins to install Groovy as needed.
+Groovy (<http://groovy-lang.org/>) is the native scripting language in Jenkins. Most of the provided scripts are implemented in Groovy. The latest version of the Groovy SDK (2.4.x as of this writing) is recommended. Jenkins can [directly install tools](https://wiki.jenkins-ci.org/display/JENKINS/Tool+Auto-Installation) and one of them is Groovy. If you don’t already have Groovy installed on your server you can configure Jenkins to install Groovy as needed.
 
 ### Git
 
@@ -37,9 +37,9 @@ The provided installation instructions are for a Windows workstation or server, 
 
 ### JENKINS\_HOME: Create Folder and Environment Variable
 
-Jenkins-CI will look for a JENKINS\_HOME environment variable on first run and will create the required installation file structure in that folder. This is preferred than installing Jenkins-CI in its default location and then needing to clone the Jenkins-LSCI project into it.
+Jenkins will look for a JENKINS\_HOME environment variable on first run and will create the required installation file structure in that folder. This is preferred than installing Jenkins in its default location and then needing to clone the Jenkins-LSCI project into it.
 
-1.  Create a folder in a suitable location on your file system where you will install Jenkins-CI. For example create a C:\\DEVTOOLS\\Jenkins folder
+1.  Create a folder in a suitable location on your file system where you will install Jenkins. For example create a C:\\DEVTOOLS\\Jenkins folder
 
 2.  Create a JENKINS\_HOME environment variable for your operating system. This variable should point to the folder you just created. For example JENKINS\_HOME=C:\\DEVTOOLS\\Jenkins
 
@@ -69,11 +69,11 @@ This minimal installation will allow you to run the Jenkins-LSCI job examples on
 
 You can either [configure the global site variables](#_Global_Variables) now or wait till later. The system comes preconfigured with defaults that use examples in the ‘userContent’ folder for testing. To use data from your own site requires that you customize the site.properties file for your installation environment.
 
-### Jenkins-CI: Download and Install
+### Jenkins: Download and Install
 
-Now you should be ready to install Jenkins-CI and take the system for a spin!
+Now you should be ready to install Jenkins and take the system for a spin!
 
-Download a [recent version of the Jenkins-CI war](https://jenkins.io/index.html) file and place it in the JENKINS\_HOME folder.
+Download a [recent version of the Jenkins war](https://jenkins.io/index.html) file and place it in the JENKINS\_HOME folder.
 
 Jenkins-LSCI Minimal Configuration
 ----------------------------------
@@ -82,7 +82,7 @@ Jenkins-LSCI Minimal Configuration
 
 1.  Open a command line window and change your working directory to JENKINS\_HOME.
 
-2.  Launch Jenkins-CI by executing java -jar jenkins.war
+2.  Launch Jenkins by executing java -jar jenkins.war
 
 3.  Once it launches, visit http://localhost:8080/ in your browser to get to the dashboard.
 
@@ -112,7 +112,7 @@ The dashboard should look similar to the one below:
 
 We will next configure a minimal security server that will allow us to test-run the Jenkins-LSCI jobs, but will not be appropriate for a production environment.
 
-Review the Jenkins-CI wiki on how to [secure Jenkins-CI](https://wiki.jenkins-ci.org/display/JENKINS/Securing+Jenkins) for a production use.
+Review the Jenkins wiki on how to [secure Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Securing+Jenkins) for a production use.
 
 #### Allow HTML Formatting
 
@@ -158,19 +158,19 @@ HTTP proxy configuration is required if your Jenkins server will be accessing th
 
 <img src="media/image3.png" width="361" height="282" />
 
-The proxy settings might not take effect until the Jenkins-CI server is restarted.
+The proxy settings might not take effect until the Jenkins server is restarted.
 
-So **exit and restart the Jenkins-CI server**.
+So **exit and restart the Jenkins server**.
 
 1.  To stop the server type: <http://localhost:8080/exit> in your browser and click on the ‘Try Posting’ button
 
 2.  Or go to the command line console and hit &lt;Ctrl&gt;-C to exit the batch script
 
-3.  Restart Jenkins-CI by executing java -jar jenkins.war
+3.  Restart Jenkins by executing java -jar jenkins.war
 
 ### Automatic Groovy Installation
 
-Before executing Jenkins-LSCI jobs that utilize Groovy scripts, we need to install Groovy on the server. Jenkins-CI has the ability to auto-install certain tools such as Groovy.
+Before executing Jenkins-LSCI jobs that utilize Groovy scripts, we need to install Groovy on the server. Jenkins has the ability to auto-install certain tools such as Groovy.
 
 1.  Go to: <http://localhost:8080/configureTools>
 
@@ -184,14 +184,14 @@ Before executing Jenkins-LSCI jobs that utilize Groovy scripts, we need to insta
 
 5.  Click on the &lt;Save&gt; or &lt;Apply&gt; buttons to save your changes
 
-This will insure that before a Groovy script is executed Jenkins-CI will download and install the requested version. Note the Groovy installation directory:
+This will insure that before a Groovy script is executed Jenkins will download and install the requested version. Note the Groovy installation directory:
 
 JENKINS\_HOME/tools/hudson.plugins.groovy.GroovyInstallation /Default
 
 Jenkins-LSCI Jobs for High Content Screening Image Analysis
 ===========================================================
 
-To demonstrate the use **of Jenkins-CI as an integration and management platform for life-sciences** research applications, we provide a set of Jenkins-LSCI jobs that in combination with CellProfiler can be used to build an effective infrastructure for image analysis as used in **high content screening** applications.
+To demonstrate the use **of Jenkins as an integration and management platform for life-sciences** research applications, we provide a set of Jenkins-LSCI jobs that in combination with CellProfiler can be used to build an effective infrastructure for image analysis as used in **high content screening** applications.
 
 These related Jenkins-LSCI jobs will enable users to:
 
@@ -327,35 +327,35 @@ On the OS\_CELLPROFILER\_BATCH build form select from the available options:
 
 Click the &lt;Build&gt; button and review the resulting build summary report.
 
-Jenkins-CI: Administration & Maintenance
+Jenkins: Administration & Maintenance
 ========================================
 
-Jenkins-CI Wiki
+Jenkins Wiki
 ---------------
 
-If you need additional information on administering and securing your Jenkins server, review the Jenkins-CI wiki:
+If you need additional information on administering and securing your Jenkins server, review the Jenkins wiki:
 
 -   <https://wiki.jenkins-ci.org/display/JENKINS/Administering+Jenkins>
 
 -   <https://wiki.jenkins-ci.org/display/JENKINS/Securing+Jenkins>
 
-Jenkins-CI and Jenkins-Plugins
+Jenkins and Jenkins-Plugins
 ------------------------------
 
-A Jenkins-CI server installation depends on the core Jenkins-CI (<http://jenkins-ci.org>) software that is freely available on the web, and a number of required **plugins** that are also freely available from the Jenkins-CI plugin repository (<https://wiki.jenkins-ci.org/display/JENKINS/Plugins>).
+A Jenkins server installation depends on the core Jenkins (<http://jenkins-ci.org>) software that is freely available on the web, and a number of required **plugins** that are also freely available from the Jenkins plugin repository (<https://wiki.jenkins-ci.org/display/JENKINS/Plugins>).
 
 |  Software        |  Link                                      |  Category |  Comment                                                      |
 |----------------------|------------------------------------------------|---------------|-------------------------------------------------------------------|
-| Jenkins-CI (Windows) | <http://mirrors.jenkins-ci.org/windows/latest> | Installation  | Download Jenkins-CI for Windows                                    |
-| Jenkins-CI (Linux)   | <http://jenkins-ci.org/>                       | Installation  | Download Jenkins-CI package for appropriate version of Linux-OS |
+| Jenkins (Windows) | <http://mirrors.jenkins-ci.org/windows/latest> | Installation  | Download Jenkins for Windows                                    |
+| Jenkins (Linux)   | <http://jenkins-ci.org/>                       | Installation  | Download Jenkins package for appropriate version of Linux-OS |
 
-Follow the installation directions relevant to the OS on which Jenkins will be running found on the [Jenkins-CI wiki](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins)
+Follow the installation directions relevant to the OS on which Jenkins will be running found on the [Jenkins wiki](https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins)
 
 #### Relative Paths to Jenkins 
 
 We will refer to the Jenkins installation directory as the JENKINS\_HOME. For a typical Windows Jenkins installation JENKINS\_HOME may look like: D:\\DEVTOOLS\\Jenkins
 
-This folder will contain additional standardized folders but may vary slightly depending on the Jenkins-CI plugins used and other configuration options:
+This folder will contain additional standardized folders but may vary slightly depending on the Jenkins plugins used and other configuration options:
 ```
 JENKINS_HOME
 |	|	config.xml (jenkins root configuration)
