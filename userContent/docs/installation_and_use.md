@@ -392,25 +392,25 @@ The configuration file for each job, and the associated scripts and properties a
 ```
 JENKINS_HOME
 |
-|__	jobs
-	|
-	|__OS_CONTRIBUTE_PIPELINE
-	|	|	config.xml (job configuration file)
-	|
-	|__buildProps
-	|	|	action.csv
-	|	|	report.properties
-	|
-	|__buildScripts
-	|	|	adaptImageList.groovy
-	|	|	xdceSlurperMapRecurese.groovy
-	|	|    ...(other scripts)
-	|
-	|__	builds
-		|
-		|__	1
-		|__	2
-		|__	n...	
+|__ jobs
+    |
+    |__OS_CONTRIBUTE_PIPELINE
+	    |	|config.xml (job configuration file)
+	    |
+	    |__buildProps
+	    |   |   action.csv
+	    |   |   report.properties
+   	    |
+	    |__buildScripts
+	    |   |   adaptImageList.groovy
+	    |   |   xdceSlurperMapRecurese.groovy
+	    |   |    ...(other scripts)
+	    |
+	    |__ builds
+	        |
+	        |__ 1
+	        |__ 2
+	        |__ n...   
 ```
 Loading New Job Definitions
 ---------------------------
