@@ -2,7 +2,7 @@
 <img src="./userContent/images/Jenkins_LifeSci.png"/>
 
 ##What can Jenkins-LSCI do?
-Jenkins-LSCI enables research scientists to build workflows and data pipelines on the same robust framework and plugin ecosystem as [Jenkins-CI](https://jenkins.io/), the widely used continuous integration server that supports building, deploying and automating any software project. 
+Jenkins-LSCI enables research scientists to build workflows and data pipelines on the same robust framework and plugin ecosystem as [Jenkins](https://jenkins.io/), the widely used continuous integration server that supports building, deploying and automating any software project. 
 
 ##High Content Image Analysis with Jenkins-LSCI and CellProfiler
 To demonstrate the utility of Jenkins-LSCI as an integration platform for life-sciences research applications, we provide a set of Jenkins-LSCI jobs that can enhance the usability of [CellProfiler](http://cellprofiler.org) in a  high performance workflow for high content screening image analysis. In addition, these jobs can form the basis for managing and sharing imaging pipelines and data in ways that can enhance scientific collaboration and reproducibility.
@@ -60,6 +60,10 @@ For general assistance with Jenkins-CI you can consult the [Jenkins Google user 
 For general assistance with CellProfiler you can consult the [CellProfiler User Group](http://forum.cellprofiler.org/)
 
 The [BioUno](http://biouno.org) open source project and [BioUno Google user group](https://groups.google.com/forum/#!forum/biouno-users) can provide additional guidance and assistance in setting up Jenkins for bioinformatics and data science applications
+
+##Attributions
+The Jenkins-LSCI project is not associated with the [Jenkins](https://jenkins.io/)(https://jenkins.io/) project.
+The name "Jenkins" is a registered trademark in the USA (#4664929), held by  [Software in the Public Interest](http://www.spi-inc.org/) (SPI). The [Jenkins-LSCI logo](./userContent/images/Jenkins_LifeSci.png) is derivative work from the original [Jenkins logo] (https://wiki.jenkins-ci.org/display/JENKINS/Logo) licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](https://creativecommons.org/licenses/by-sa/3.0/).
 
 ##License
 The Jenkins-LSCI code is provided under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license
