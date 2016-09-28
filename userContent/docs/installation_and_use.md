@@ -397,16 +397,16 @@ JENKINS_HOME
     |__OS_CONTRIBUTE_PIPELINE
 	    |	|config.xml (job configuration file)
 	    |
-	    |__buildProps
+	    |__buildProps (build report configuration files)
 	    |   |   action.csv
 	    |   |   report.properties
    	    |
-	    |__buildScripts
+	    |__buildScripts(build scripts not in scriptler)
 	    |   |   adaptImageList.groovy
 	    |   |   xdceSlurperMapRecurese.groovy
 	    |   |    ...(other scripts)
 	    |
-	    |__ builds
+	    |__ builds (build archived results)
 	        |
 	        |__ 1
 	        |__ 2
