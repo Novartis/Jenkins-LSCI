@@ -51,7 +51,7 @@ Jenkins will look for a JENKINS\_HOME environment variable on first run and will
 
 2.  Then execute the command:
 
-> git clone <https://github.com/Novartis/Jenkins-LSCI.git>
+> git clone <https://github.com/Novartis/Jenkins-LSCI.git> .
 
 This should clone the required Jenkins-LSCI jobs, plugins, scripts, and other resource folders into the JENKINS\_HOME folder.
 
@@ -186,7 +186,7 @@ Before executing Jenkins-LSCI jobs that utilize Groovy scripts, we need to insta
 
 This will insure that before a Groovy script is executed Jenkins will download and install the requested version. Note the Groovy installation directory:
 
-JENKINS\_HOME/tools/hudson.plugins.groovy.GroovyInstallation /Default
+JENKINS\_HOME/tools/hudson.plugins.groovy.GroovyInstallation/Default
 
 Jenkins-LSCI Jobs for High Content Screening Image Analysis
 ===========================================================
