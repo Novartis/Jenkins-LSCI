@@ -24,7 +24,7 @@
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>WHAT_IS_THIS</name>
-          <description>&lt;h2&gt;1. Select a Contributed CellProfiler pipeline or &lt;a href=&quot;/job/Contribute_Pipeline/build?delay=0sec&quot;&gt;upload &lt;/a&gt;a new one&lt;/h2&gt;</description>
+          <description>&lt;h2&gt;1. Select a Contributed CellProfiler pipeline or &lt;a href=&quot;/job/OS_CONTRIBUTE_PIPELINE/build?delay=0sec&quot;&gt;upload &lt;/a&gt;a new one&lt;/h2&gt;</description>
           <defaultValue>This project allows you to run CellProfiler on the Linux cluster. You need to have uploaded a CP pipeline and a compatible image list</defaultValue>
         </hudson.model.StringParameterDefinition>
         <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@1.4">
