@@ -62,6 +62,8 @@ For general assistance with CellProfiler you can consult the [CellProfiler User 
 The [BioUno](http://biouno.org) open source project and [BioUno Google user group](https://groups.google.com/forum/#!forum/biouno-users) can provide additional guidance and assistance in setting up Jenkins for bioinformatics and data science applications
 
 ## Attributions
+The initial Jenkins-LSCI code was committed to accompany the article by Ioannis Moutsatsos K., et al. “Jenkins-CI, an Open-Source Continuous Integration System, as a Scientific Data and Image-Processing Platform.” Journal of Biomolecular Screening (2016): [1087057116679993](http://journals.sagepub.com/doi/abs/10.1177/1087057116679993). Please, reference this article when using code from the Jenkins-LSCI repository.
+
 The Jenkins-LSCI project is not associated with the [Jenkins](https://jenkins.io/)(https://jenkins.io/) project.
 The name "Jenkins" is a registered trademark in the USA (#4664929), held by  [Software in the Public Interest](http://www.spi-inc.org/) (SPI). The [Jenkins-LSCI logo](./userContent/images/Jenkins_LifeSci.png) is derivative work from the original [Jenkins logo] (https://wiki.jenkins-ci.org/display/JENKINS/Logo) licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](https://creativecommons.org/licenses/by-sa/3.0/).
 
