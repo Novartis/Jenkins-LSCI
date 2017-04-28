@@ -1,10 +1,10 @@
-#Jenkins-LSCI (Life Science Continuous Integration)
+# Jenkins-LSCI (Life Science Continuous Integration)
 <img src="./userContent/images/Jenkins_LifeSci.png"/>
 
-##What can Jenkins-LSCI do?
+## What can Jenkins-LSCI do?
 Jenkins-LSCI enables research scientists to build workflows and data pipelines on the same robust framework and plugin ecosystem as [Jenkins](https://jenkins.io/), the widely used continuous integration server that supports building, deploying and automating any software project. 
 
-##High Content Image Analysis with Jenkins-LSCI and CellProfiler
+## High Content Image Analysis with Jenkins-LSCI and CellProfiler
 To demonstrate the utility of Jenkins-LSCI as an integration platform for life-sciences research applications, we provide a set of Jenkins-LSCI jobs that can enhance the usability of [CellProfiler](http://cellprofiler.org) in a  high performance workflow for high content screening image analysis. In addition, these jobs can form the basis for managing and sharing imaging pipelines and data in ways that can enhance scientific collaboration and reproducibility.
 
 These related Jenkins-LSCI jobs enable users to:
